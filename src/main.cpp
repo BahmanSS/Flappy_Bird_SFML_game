@@ -11,7 +11,7 @@ int main()
     manager.setState(std::make_unique<MenuState>
         (manager, window.getSize().x, window.getSize().y));
     
-
+    sf::Clock clock;
 
     while (window.isOpen()) {
         while (const std::optional event = window.pollEvent()) {
@@ -19,7 +19,9 @@ int main()
 
             manager.handleEvent((*event));
         }
-        //TODO: state.update();
+        
+        float dt = clock.restart().asSeconds();
+        manager.update(dt);
         
         window.clear();
         manager.draw(window);
