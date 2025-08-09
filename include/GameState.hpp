@@ -35,7 +35,7 @@ public:
         }
     }
     void update(float dt) override {
-        bird.update(dt);
+        bird.update(dt,width,height);
     }
     void draw(sf::RenderWindow& window) override {
         window.draw(*bgnight);

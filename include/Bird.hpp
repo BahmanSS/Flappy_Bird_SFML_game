@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
+#include "BirdCollider.hpp"
 
 class Bird {
 public:
@@ -17,11 +18,11 @@ public:
         auto bounds = bird->getLocalBounds();
         bird->setOrigin({bounds.getCenter().x, bounds.getCenter().y}); 
     }
-
     void flap() {
         velocity = jumpimpulse;
     }
-    void update(float dt) {
+    void update(float dt, unsigned int width, unsigned int height) {
+        //Animation fly
         animationTimer += dt;
         if (animationTimer > animationDelay) {
             animationTimer = 0.f;
@@ -36,9 +37,22 @@ public:
                 bird->setTexture(birddowntexture);
             }
         }
-
+        // change velocity and rotation bird
         velocity += gravity * dt;
-        bird->move({0.f, velocity * dt});
+        if (velocity < 0.f ) {
+            bird->setRotation(sf::degrees(-15));
+        }
+        else {
+            bird->setRotation(sf::degrees(15));
+        }
+
+        sf::FloatRect birdbounds = bird->getGlobalBounds();
+        BirdCollider ColliderBird;
+        if (ColliderBird.checkCollision(birdbounds,width,height) == 0 ||
+            ColliderBird.checkCollision(birdbounds,width,height) == 1 && velocity < 0 ||
+            ColliderBird.checkCollision(birdbounds,width,height) == 2 && velocity > 0 ) {
+            bird->move({0.f, velocity * dt});
+        }
     }
     void draw(sf::RenderWindow& window) {
         window.draw(*bird);
