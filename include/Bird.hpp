@@ -66,8 +66,8 @@ private:
     std::unique_ptr<sf::Sprite> bird;
     // Bird
     float velocity = 0.f;
-    float gravity = 500.f;
-    float jumpimpulse = -300.f;
+    float gravity = 450.f;
+    float jumpimpulse = -250.f;
 
     float animationTimer = 0.f;
     float animationDelay = 0.1f;

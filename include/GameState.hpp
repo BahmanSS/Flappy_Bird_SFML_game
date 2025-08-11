@@ -1,11 +1,12 @@
 #pragma once
 #include "StateManager.hpp"
 #include "Bird.hpp"
+#include "Pipe.hpp"
 
 class GameState: public State {
 public:
     GameState(StateManager& Manager, unsigned int width_, unsigned int height_)
-              : manager(Manager), width(width_), height(height_), bird(width/2,height/2) {
+              : manager(Manager), width(width_), height(height_), bird(width/2,height/2), pipe(100u, width_, height_) {
                 bgdaytexture.loadFromFile("assets/sprites/background-day.png");
                 bgday = std::make_unique<sf::Sprite>(bgdaytexture);
                 bgday->setScale({
@@ -36,10 +37,12 @@ public:
     }
     void update(float dt) override {
         bird.update(dt,width,height);
+        pipe.update(dt);
     }
     void draw(sf::RenderWindow& window) override {
         window.draw(*bgnight);
         bird.draw(window);
+        pipe.draw(window);
     }
 private:
     StateManager& manager;
@@ -54,4 +57,5 @@ private:
     std::unique_ptr<sf::Sprite> bgnight;
 
     Bird bird;
+    Pipe pipe;
 };
