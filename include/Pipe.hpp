@@ -30,12 +30,15 @@ public:
     void update(float dt) {
         lowerpipe->move({velocity*dt, 0.f});
         upperpipe->move({velocity*dt, 0.f});
+        path += -velocity*dt;
     }
     void reset(unsigned int heightlower, unsigned int distance_) {
         distance = distance_;
+        path = 0.f;
         lowerpipe->setPosition({width, height - heightlower});
         upperpipe->setPosition({width + widthpipe * upperpipe->getScale().x, height - heightlower - distance});
     }
+    float getPath() { return path; }
 private:
     //Textures
     sf::Texture pipetexture;
@@ -47,7 +50,9 @@ private:
     float heightpipe;
     unsigned int distance = 170u;
     float velocity = -100.f;
+    float path = 0.f;
     //window info
     float width;
     float height;
+
 };
