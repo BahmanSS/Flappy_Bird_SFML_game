@@ -7,7 +7,7 @@ class GameState: public State {
 public:
     GameState(StateManager& Manager, unsigned int width_, unsigned int height_)
               : manager(Manager), width(width_), height(height_), bird(width/2,height/2), 
-                pipemanager(width_, height_) {
+                pipemanager(bird, width_, height_) {
                 bgdaytexture.loadFromFile("assets/sprites/background-day.png");
                 bgday = std::make_unique<sf::Sprite>(bgdaytexture);
                 bgday->setScale({
@@ -37,8 +37,9 @@ public:
         }
     }
     void update(float dt) override {
-        bird.update(dt,width,height);
-        pipemanager.update(dt);
+        if (pipemanager.update(dt)) {
+             bird.update(dt,width,height);
+        }
     }
     void draw(sf::RenderWindow& window) override {
         window.draw(*bgnight);

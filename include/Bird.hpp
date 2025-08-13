@@ -57,6 +57,9 @@ public:
     void draw(sf::RenderWindow& window) {
         window.draw(*bird);
     }
+    sf::FloatRect getGlobalBounds() const {
+        return bird->getGlobalBounds();
+    }
 private:
     //Textures 
     sf::Texture birddowntexture;

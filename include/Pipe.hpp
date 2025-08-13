@@ -5,8 +5,8 @@
 class Pipe {
 public:
     // heightlower
-    Pipe(unsigned int heightlower,unsigned int width_, unsigned int height_)
-                : width(static_cast<float>(width_)), height(static_cast<float>(height_)) {
+    Pipe(unsigned int heightlower_,unsigned int width_, unsigned int height_)
+                :heightlower(heightlower_), width(static_cast<float>(width_)), height(static_cast<float>(height_)) {
         pipetexture.loadFromFile("assets/sprites/pipe-red.png");
         
         widthpipe = pipetexture.getSize().x;
@@ -38,7 +38,16 @@ public:
         lowerpipe->setPosition({width, height - heightlower});
         upperpipe->setPosition({width + widthpipe * upperpipe->getScale().x, height - heightlower - distance});
     }
-    float getPath() { return path; }
+    float getPath() const { return path; }
+    sf::FloatRect getBoundsUpper() const {
+        // получить данные центра (квадрата) между трубами,
+        //return sf::FloatRect({ width - static_cast<float>(distance), height-static_cast<float>(heightlower + distance) },
+        //                    { widthpipe * upperpipe->getScale().x, static_cast<float>(distance)});
+        return upperpipe->getGlobalBounds();
+    }
+    sf::FloatRect getBoundsLower() const {
+        return lowerpipe->getGlobalBounds();
+    }
 private:
     //Textures
     sf::Texture pipetexture;
@@ -48,9 +57,11 @@ private:
     // info for Pipe
     float widthpipe;
     float heightpipe;
-    unsigned int distance = 170u;
-    float velocity = -100.f;
-    float path = 0.f;
+
+    unsigned int distance = 170u; // расстояние между трубами
+    float velocity = -100.f; // скорость труб
+    float path = 0.f; // пройденный путь
+    unsigned int heightlower;
     //window info
     float width;
     float height;
