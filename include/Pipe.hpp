@@ -33,16 +33,16 @@ public:
         path += -velocity*dt;
     }
     void reset(unsigned int heightlower, unsigned int distance_) {
+        scored = false;
         distance = distance_;
         path = 0.f;
         lowerpipe->setPosition({width, height - heightlower});
         upperpipe->setPosition({width + widthpipe * upperpipe->getScale().x, height - heightlower - distance});
     }
+    void Score() { scored = true; }
+    bool getScored() const { return scored; }
     float getPath() const { return path; }
     sf::FloatRect getBoundsUpper() const {
-        // получить данные центра (квадрата) между трубами,
-        //return sf::FloatRect({ width - static_cast<float>(distance), height-static_cast<float>(heightlower + distance) },
-        //                    { widthpipe * upperpipe->getScale().x, static_cast<float>(distance)});
         return upperpipe->getGlobalBounds();
     }
     sf::FloatRect getBoundsLower() const {
@@ -62,6 +62,8 @@ private:
     float velocity = -100.f; // скорость труб
     float path = 0.f; // пройденный путь
     unsigned int heightlower;
+
+    bool scored = false;
     //window info
     float width;
     float height;

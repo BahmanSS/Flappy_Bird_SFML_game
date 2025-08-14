@@ -2,6 +2,7 @@
 #include "StateManager.hpp"
 #include "Bird.hpp"
 #include "PipeManager.hpp"
+#include "Counter.hpp"
 
 class GameState: public State {
 public:
@@ -20,8 +21,6 @@ public:
                     static_cast<float>(width)/static_cast<float>(bgnight->getTexture().getSize().x),
                     static_cast<float>(height)/static_cast<float>(bgnight->getTexture().getSize().y)
                 });
-                
-
               }
     void handleEvent(const sf::Event& event) override {
         if (const auto* KeyPresset = event.getIf<sf::Event::KeyPressed>() ) {
@@ -38,13 +37,16 @@ public:
     }
     void update(float dt) override {
         if (pipemanager.update(dt)) {
-             bird.update(dt,width,height);
+            bird.update(dt,width,height);
+            if (pipemanager.checkBirdPassedPipes()) { ++counter; }
+            counter.update(dt);
         }
     }
     void draw(sf::RenderWindow& window) override {
         window.draw(*bgnight);
         bird.draw(window);
         pipemanager.draw(window);
+        counter.draw(window);
     }
 private:
     StateManager& manager;
@@ -60,4 +62,6 @@ private:
 
     Bird bird;
     PipeManager pipemanager;
+    Counter counter;
+
 };

@@ -38,7 +38,7 @@ public:
         }
     }
     void update(float dt) override {
-        // TODO: сделать максимальный счет в игре( отображение в меню )!!!
+
     }
     void draw(sf::RenderWindow& window) override {
         window.draw(*background);
@@ -59,6 +59,6 @@ private:
 
     //TODO: go to game function
     void ChangeStateToGame() {
-        manager.setState(std::make_unique<GameState>(manager,width,height));
+        manager.setState(std::make_unique<GameState>(manager, width, height));
     }
 };

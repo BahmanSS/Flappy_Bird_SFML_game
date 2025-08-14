@@ -30,6 +30,7 @@ public:
             if (!pipe_3 && pipe_2 && pipe_2->getPath() > currentPath) {
                 pipe_3 = std::make_unique<Pipe>(std::rand() % randbust, width, height);
             }
+
             if (pipe_1->getPath() > currentPath * 3) {
                 pipe_1->reset(std::rand() % randbust, distance);
             }
@@ -52,6 +53,27 @@ public:
         if (pipe_2) pipe_2->draw(window);
         if (pipe_3) pipe_3->draw(window);
     }
+    bool checkBirdPassedPipes() {
+        BirdPipeCollider collider;
+
+        bool scoredThisFrame = false;
+
+        if (!pipe_1->getScored() && collider.checkBirdPassedPipes(bird, *pipe_1)) {
+            pipe_1->Score();
+            scoredThisFrame = true;
+        }
+        if (pipe_2 && !pipe_2->getScored() && collider.checkBirdPassedPipes(bird, *pipe_2)) {
+            pipe_2->Score();
+            scoredThisFrame = true;
+        }
+        if (pipe_3 && !pipe_3->getScored() && collider.checkBirdPassedPipes(bird, *pipe_3)) {
+            pipe_3->Score();
+            scoredThisFrame = true;
+        }
+
+        return scoredThisFrame;
+    }
+
 private:
     std::unique_ptr <Pipe> pipe_1;
     std::unique_ptr <Pipe> pipe_2;
