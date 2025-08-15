@@ -1,8 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include "../include/StateManager.hpp"
 #include "../include/MenuState.hpp"
+#include <cstdlib>
+#include <ctime>
 int main()
 {
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
     auto window = sf::RenderWindow(sf::VideoMode({500u, 700u}), "Flappy Bird!");
     window.setFramerateLimit(144);
 

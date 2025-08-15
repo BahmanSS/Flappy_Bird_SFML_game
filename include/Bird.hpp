@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <memory>
 #include <vector>
 #include "BirdCollider.hpp"
@@ -17,9 +18,15 @@ public:
         bird->setPosition({x,y});
         auto bounds = bird->getLocalBounds();
         bird->setOrigin({bounds.getCenter().x, bounds.getCenter().y}); 
+        // Get SoundBuffer
+        flapBuffer.loadFromFile("assets/audio/wing.wav");
+        // Create Sound
+        flapSound = std::make_unique<sf::Sound>(flapBuffer);
+        
     }
     void flap() {
         velocity = jumpimpulse;
+        flapSound->play();
     }
     void update(float dt, unsigned int width, unsigned int height) {
         //Animation fly
@@ -67,6 +74,10 @@ private:
     sf::Texture birduptexture;
     //Sprite
     std::unique_ptr<sf::Sprite> bird;
+    //SoundBuffer
+    sf::SoundBuffer flapBuffer;
+    //Sound
+    std::unique_ptr<sf::Sound> flapSound;
     // Bird
     float velocity = 0.f;
     float gravity = 450.f;
