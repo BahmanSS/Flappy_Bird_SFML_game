@@ -13,6 +13,7 @@ public:
                 bgdaytexture.loadFromFile("assets/sprites/background-day.png");
                 bgnighttexture.loadFromFile("assets/sprites/background-night.png");
                 basetexture.loadFromFile("assets/sprites/base.png");
+                gameovertexture.loadFromFile("assets/sprites/gameover.png");
                 // Create Sprites
                 bgday = std::make_unique<sf::Sprite>(bgdaytexture);
                 bgday->setScale({
@@ -29,6 +30,12 @@ public:
                 base = std::make_unique<sf::Sprite>(basetexture);
                 base->setPosition({0.f,static_cast<float>(height - basetexture.getSize().y)});
                 base->setScale({static_cast<float>(width)/static_cast<float>(basetexture.getSize().x),1.f});
+
+                gameOver = std::make_unique<sf::Sprite>(gameovertexture);
+                gameOver->setOrigin({static_cast<float>(gameovertexture.getSize().x/2),
+                                    static_cast<float>(gameovertexture.getSize().y/2)});
+                gameOver->setPosition({static_cast<float>(width/2),static_cast<float>(height/2)});
+                gameOver->setScale({1.5f,1.5f});
                 //Load SoundBuffers
                 pointbuffer.loadFromFile("assets/audio/point.wav");
                 diebuffer.loadFromFile("assets/audio/die.wav");
@@ -43,12 +50,22 @@ public:
         if (const auto* KeyPresset = event.getIf<sf::Event::KeyPressed>() ) {
             if (KeyPresset->scancode == sf::Keyboard::Scancode::Enter ||
                 KeyPresset->scancode == sf::Keyboard::Scancode::Space) {
-                bird.flap();
+                if (!dieSoundPlay) {
+                    bird.flap();
+                }
+                else {
+                    ChangeStateToMenu();
+                }
             }
         }
         else if (const auto* MouseKeyPresset = event.getIf<sf::Event::MouseButtonPressed>()) {
             if (MouseKeyPresset->button == sf::Mouse::Button::Left) {
-                bird.flap();
+                if (!dieSoundPlay) {
+                    bird.flap();
+                }
+                else {
+                    ChangeStateToMenu();
+                }
             }
         }
     }
@@ -65,10 +82,10 @@ public:
         else {
             if(dieSound->getStatus() != sf::SoundSource::Status::Playing && !dieSoundPlay) {
                 dieSound->play();
-            }
-            else {
                 dieSoundPlay = true;
             }
+            counter.SaveScoreToFile();
+
         }
     }
     void draw(sf::RenderWindow& window) override {
@@ -77,6 +94,9 @@ public:
         window.draw(*base);
         bird.draw(window);
         counter.draw(window);
+        if (dieSoundPlay == true) {
+            window.draw(*gameOver);
+        }
     }
 private:
     StateManager& manager;
@@ -87,10 +107,12 @@ private:
     sf::Texture bgdaytexture;
     sf::Texture bgnighttexture;
     sf::Texture basetexture;
+    sf::Texture gameovertexture;
     // Sprites
     std::unique_ptr<sf::Sprite> bgday;
     std::unique_ptr<sf::Sprite> bgnight;
     std::unique_ptr<sf::Sprite> base;
+    std::unique_ptr<sf::Sprite> gameOver;
     //SoundBuffers
     sf::SoundBuffer pointbuffer;
     sf::SoundBuffer diebuffer;
@@ -103,4 +125,5 @@ private:
     std::unique_ptr<PipeManager> pipemanager;
     Counter counter;
 
+    void ChangeStateToMenu();
 };

@@ -3,6 +3,7 @@
 #include <array>
 #include <string>
 #include <memory>
+#include <fstream>
 
 class Counter {
 public:
@@ -35,6 +36,22 @@ public:
     Counter& operator++() {
         ++cnt;
         return *this;
+    }
+    bool SaveScoreToFile() {
+        std::ifstream inFile("saves/score.txt");
+        if (!inFile) {
+            return false;
+        }
+        int Filecnt;
+        inFile >> Filecnt;
+        if (Filecnt < cnt) {
+            std::ofstream outFile("saves/score.txt");
+            if (!outFile) {
+                return false;
+            }
+            outFile << cnt;
+        }
+        return true;
     }
 
 private:
