@@ -3,12 +3,13 @@
 #include "GameState.hpp"
 #include <iostream>
 #include <memory>
+#include "Counter.hpp"
 
 class MenuState : public State {
 public:
     MenuState(StateManager& Manager,
               int width_, unsigned int height_)
-              : manager(Manager), width(width_), height(height_) {
+              : manager(Manager), width(width_), height(height_){
         
         bgtexture.loadFromFile("assets/sprites/background-day.png");
         background = std::make_unique<sf::Sprite>(bgtexture);
@@ -19,10 +20,12 @@ public:
 
         gameUItexture.loadFromFile("assets/sprites/message.png");
         gameUI = std::make_unique<sf::Sprite>(gameUItexture);
+        gameUI->setPosition({0.f,50.f});
         gameUI->setScale({
             static_cast<float>(width)/static_cast<float>(gameUI->getTexture().getSize().x),
-            static_cast<float>(height)/static_cast<float>(gameUI->getTexture().getSize().y)
+            static_cast<float>(height)/static_cast<float>(gameUI->getTexture().getSize().y)-0.2f
         });
+        counter.LoadScoreFromFile();
     }
     void handleEvent(const sf::Event& event) override {
         if (const auto* KeyPresset = event.getIf<sf::Event::KeyPressed>() ) {
@@ -38,11 +41,12 @@ public:
         }
     }
     void update(float dt) override {
-
+        counter.update(dt);
     }
     void draw(sf::RenderWindow& window) override {
         window.draw(*background);
         window.draw(*gameUI);
+        counter.draw(window);
     }
 private:
     StateManager& manager;
@@ -61,4 +65,6 @@ private:
     void ChangeStateToGame() {
         manager.setState(std::make_unique<GameState>(manager, width, height));
     }
+
+    Counter counter;
 };

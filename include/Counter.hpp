@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <fstream>
+#include <iostream>
 
 class Counter {
 public:
@@ -52,6 +53,17 @@ public:
             outFile << cnt;
         }
         return true;
+    }
+    bool LoadScoreFromFile() {
+        std::ifstream inFile("saves/score.txt");
+        if (!inFile) {
+            return false;
+        }
+        inFile >> cnt;
+    }
+    void resetScore() {
+        cnt = 0u;
+        SaveScoreToFile();
     }
 
 private:
