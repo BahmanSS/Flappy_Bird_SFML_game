@@ -7,50 +7,13 @@
 
 class MenuState : public State {
 public:
-    MenuState(StateManager& Manager,
-              int width_, unsigned int height_)
-              : manager(Manager), width(width_), height(height_){
-        
-        bgtexture.loadFromFile("assets/sprites/background-day.png");
-        background = std::make_unique<sf::Sprite>(bgtexture);
-        background->setScale({
-            static_cast<float>(width)/static_cast<float>(background->getTexture().getSize().x),
-            static_cast<float>(height)/static_cast<float>(background->getTexture().getSize().y)
-        });
-
-        gameUItexture.loadFromFile("assets/sprites/message.png");
-        gameUI = std::make_unique<sf::Sprite>(gameUItexture);
-        gameUI->setPosition({0.f,50.f});
-        gameUI->setScale({
-            static_cast<float>(width)/static_cast<float>(gameUI->getTexture().getSize().x),
-            static_cast<float>(height)/static_cast<float>(gameUI->getTexture().getSize().y)-0.2f
-        });
-        counter.LoadScoreFromFile();
-    }
-    void handleEvent(const sf::Event& event) override {
-        if (const auto* KeyPresset = event.getIf<sf::Event::KeyPressed>() ) {
-            if (KeyPresset->scancode == sf::Keyboard::Scancode::Enter ||
-                KeyPresset->scancode == sf::Keyboard::Scancode::Space) {
-                ChangeStateToGame();
-            }
-        }
-        else if (const auto* MouseKeyPresset = event.getIf<sf::Event::MouseButtonPressed>()) {
-            if (MouseKeyPresset->button == sf::Mouse::Button::Left) {
-                ChangeStateToGame();
-            }
-        }
-    }
-    void update(float dt) override {
-        counter.update(dt);
-    }
-    void draw(sf::RenderWindow& window) override {
-        window.draw(*background);
-        window.draw(*gameUI);
-        counter.draw(window);
-    }
+    MenuState(StateManager& Manager, int width_, unsigned int height_);
+    void handleEvent(const sf::Event& event) override;
+    void update(float dt) override;
+    void draw(sf::RenderWindow& window) override;
 private:
+    Counter counter;
     StateManager& manager;
-
     // game window information
     unsigned int width;
     unsigned int height;
@@ -60,11 +23,5 @@ private:
     // Sprites
     std::unique_ptr <sf::Sprite> background;
     std::unique_ptr <sf::Sprite> gameUI;
-
-    //TODO: go to game function
-    void ChangeStateToGame() {
-        manager.setState(std::make_unique<GameState>(manager, width, height));
-    }
-
-    Counter counter;
+    void ChangeStateToGame();
 };

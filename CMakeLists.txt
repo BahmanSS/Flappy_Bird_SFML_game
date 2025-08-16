@@ -12,6 +12,19 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp src/GameState.cpp)
+set(SOURCES 
+    src/Bird.cpp
+    src/BirdCollider.cpp 
+    src/BirdPipeCollider.cpp
+    src/Counter.cpp 
+    src/GameState.cpp 
+    src/main.cpp
+    src/MenuState.cpp 
+    src/Pipe.cpp 
+    src/PipeManager.cpp
+)
+
+add_executable(main ${SOURCES})
+target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_compile_features(main PRIVATE cxx_std_17)
 target_link_libraries(main PRIVATE SFML::Graphics SFML::Audio)
