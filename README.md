@@ -4,8 +4,10 @@ This repository contains a simple **Flappy Bird clone**, implemented in C++ usin
 The project was created as part of **learning SFML** and does not aim to be a fully polished or commercial game.
 
 ---
-[![2025-08-19-012327.jpg](https://i.postimg.cc/NMxPZ028/2025-08-19-012327.jpg)](https://postimg.cc/jwLX7tXC)
-[![2025-08-19-012355.jpg](https://i.postimg.cc/25Rc6W4F/2025-08-19-012355.jpg)](https://postimg.cc/w12c4747)
+[![2025-08-19-012327.jpg](https://i.postimg.cc/hGcL61Lw/2025-08-19-012327.jpg)](https://postimg.cc/0zXKJmHd)
+[![2025-08-19-012355.jpg](https://i.postimg.cc/sgF99rv3/2025-08-19-012355.jpg)](https://postimg.cc/7fV2wj3R)
+[![2025-08-19-012414.jpg](https://i.postimg.cc/k45xXMhv/2025-08-19-012414.jpg)](https://postimg.cc/PLBLSHHC)
+
 
 ## 🎮 Game Description
 
