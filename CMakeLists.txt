@@ -24,7 +24,7 @@ set(SOURCES
     src/PipeManager.cpp
 )
 
-add_executable(main ${SOURCES})
-target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_compile_features(main PRIVATE cxx_std_17)
-target_link_libraries(main PRIVATE SFML::Graphics SFML::Audio)
+add_executable(game ${SOURCES})
+target_include_directories(game PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_compile_features(game PRIVATE cxx_std_17)
+target_link_libraries(game PRIVATE SFML::Graphics SFML::Audio)
